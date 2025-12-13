@@ -190,8 +190,8 @@
                 if (Number.isInteger(parseFloat(result))) {
                     let startRes = result.toString().substring(0, 4);
                     let endRes = result.toString().substring(4);
-                    resultToDisplay = (startRes * (10 ** endRes.length)).toExponential();
-                    console.log(resultToDisplay);
+                    result = (startRes * (10 ** endRes.length)).toExponential();
+                    resultToDisplay = result;
                     displayMessage("Your result is too large to display!");
                 }
                 else
