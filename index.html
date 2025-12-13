@@ -11,6 +11,7 @@
 
 </head>
 <body>
+    <div id="message"></div>
     <div id="box">
         <div id="display-box">
             <div id="equation"></div>
@@ -56,6 +57,8 @@
         let numButtons = document.querySelectorAll(".digit");
         numButtons.forEach((button) => {
             button.addEventListener("click", () => {
+                if (result != "")
+                    clearAll();
                 currentInput = currentInput + button.id;
                 displayEquation();
             });
@@ -64,10 +67,24 @@
         let operatorButtons = document.querySelectorAll(".operation");
         operatorButtons.forEach((button) => {
             button.addEventListener("click", () => {
-                firstOperand = currentInput;
-                currentInput = "";
-                operator = button.id;
+                if (currentInput == "" && firstOperand == "") {}
+                else if (result == "" && operator == "") {
+                    firstOperand = currentInput;
+                    currentInput = "";
+                    operator = button.id;
+                }
+                else if (result == "" && operator != "") {
+                    currentInput = "";
+                    operator = button.id;
+                }
+                else if (result != "") {
+                    firstOperand = result;
+                    result = "";
+                    currentInput = "";
+                    operator = button.id;
+                }
                 displayEquation();
+                displayResult();
             });
         });
 
@@ -77,13 +94,12 @@
             currentInput = "";
 
             operate(firstOperand, secondOperand, operator);
-            console.log("f" + firstOperand);
-            console.log("s" + secondOperand);
-            console.log("o" + operator);
         });
 
         let clearButton = document.querySelector("#clear");
-        clearButton.addEventListener("click", () => {
+        clearButton.addEventListener("click", clearAll);
+
+        function clearAll() {
             firstOperand = "";
             secondOperand = "";
             currentInput = "";
@@ -91,7 +107,7 @@
             result = "";
             displayEquation();
             displayResult();
-        });
+        }
 
         function operate(firstOperand, secondOperand, operator) {
             switch (operator) {
