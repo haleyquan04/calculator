@@ -67,16 +67,22 @@
         let operatorButtons = document.querySelectorAll(".operation");
         operatorButtons.forEach((button) => {
             button.addEventListener("click", () => {
+                // no input, no operator -> nothing
                 if (currentInput == "" && firstOperand == "") {}
+                // no result, no operator (normal) -> update first input, operator
                 else if (result == "" && operator == "") {
                     firstOperand = currentInput;
                     currentInput = "";
                     operator = button.id;
                 }
-                else if (result == "" && operator != "") {
+                // no result, but an operator -> just want to change operator
+                else if (result == "" && operator != "" && currentInput == "") {
                     currentInput = "";
                     operator = button.id;
                 }
+                // no result, yes operator, have current input
+                else if (result == "" && operator != "" && currentInput != "") {}
+                // result is non-empty, we want to chain.
                 else if (result != "") {
                     firstOperand = result;
                     result = "";
@@ -90,10 +96,15 @@
 
         let equalButton = document.querySelector("#equal");
         equalButton.addEventListener("click", () => {
+            if(operator == "") {
+                result = currentInput;
+            } else if (operator != "" && currentInput == "") {
+                message = "Nice try!";
+            } else {
             secondOperand = currentInput;
             currentInput = "";
-
             operate(firstOperand, secondOperand, operator);
+            }
         });
 
         let clearButton = document.querySelector("#clear");
