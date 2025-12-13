@@ -13,40 +13,105 @@
 <body>
     <div id="box">
         <div id="display">
-            12345i90
+            <!-- 12345i90 -->
         </div>
         <div class="button-row">
-            <button class="digit">7</button>
-            <button class="digit">8</button>
-            <button class="digit"v>9</button>
-            <button class="operation">&divide</button>
+            <button class="digit" id="7">7</button>
+            <button class="digit" id="8">8</button>
+            <button class="digit" id="9">9</button>
+            <button class="operation" id="divide">&divide</button>
         </div>
         <div class="button-row">
-            <button class="digit">4</button>
-            <button class="digit">5</button>
-            <button class="digit"v>6</button>
-            <button class="operation">&times</button>
+            <button class="digit" id="4">4</button>
+            <button class="digit" id="5">5</button>
+            <button class="digit" id="6">6</button>
+            <button class="operation" id ="multiply">&times</button>
         </div>
         
         <div class="button-row">
-            <button class="digit">1</button>
-            <button class="digit">2</button>
-            <button class="digit"v>3</button>
-            <button class="operation">-</button>
+            <button class="digit" id="1">1</button>
+            <button class="digit" id="2">2</button>
+            <button class="digit" id="3">3</button>
+            <button class="operation" id="subtract">-</button>
         </div>
 
         <div class="button-row">
-            <button class="digit">0</button>
-            <button class="equals">=</button>
-            <button class="equals">C</button>
-            <button class="operation">+</button>
+            <button class="digit" id="0">0</button>
+            <button class="other" id="equal">=</button>
+            <button class="other" id="clear">C</button>
+            <button class="operation" id="add">+</button>
         </div>
     </div>
 
     <script>
-        // let firstOperand = 0;
-        // let secondOperand = 0;
-        // let 
+        let firstOperand = "";
+        let secondOperand = "";
+        let currentInput = "";
+        let operator = "";
+        let result = "";
+
+        let message = "";
+
+        let numButtons = document.querySelectorAll(".digit");
+        numButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                currentInput = currentInput + button.id;
+                console.log(currentInput);
+            });
+        });
+
+        let operatorButtons = document.querySelectorAll(".operation");
+        operatorButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                firstOperand = currentInput;
+                currentInput = "";
+                operator = button.id;
+            });
+        });
+
+        let equalButton = document.querySelector("#equal");
+        equalButton.addEventListener("click", () => {
+            secondOperand = currentInput;
+            currentInput = "";
+
+            operate(firstOperand, secondOperand, operator);
+            // console.log("f" + firstOperand);
+            // console.log("s" + secondOperand);
+            // console.log("o" + operator);
+        });
+
+        let clearButton = document.querySelector("#clear");
+        clearButton.addEventListener("click", () => {
+            let firstOperand = "";
+            let secondOperand = "";
+            let currentInput = "";
+            let operator = "";
+        });
+
+        function operate(firstOperand, secondOperand, operator) {
+            switch (operator) {
+                case "add":
+                    result = parseInt(firstOperand) + parseInt(secondOperand);
+                    break;
+                case "subtract":
+                    result = parseInt(firstOperand) - parseInt(secondOperand);
+                    break;
+                case "multiply":
+                    result = parseInt(firstOperand) * parseInt(secondOperand);
+                    break;
+                case "divide":
+                    if (secondOperand == 0)
+                        message = "You can't divide by zero!"
+                    else 
+                        result = parseInt(firstOperand) / parseInt(secondOperand);
+                    break;
+            }
+            console.log(result);
+            display.textContent = result;
+        }
+
+        let display = document.querySelector("#display");
+
     </script>
 </body>
 </html>
