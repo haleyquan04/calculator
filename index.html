@@ -12,8 +12,9 @@
 </head>
 <body>
     <div id="box">
-        <div id="display">
-            <!-- 12345i90 -->
+        <div id="display-box">
+            <div id="equation"></div>
+            <div id="result"></div>
         </div>
         <div class="button-row">
             <button class="digit" id="7">7</button>
@@ -56,7 +57,7 @@
         numButtons.forEach((button) => {
             button.addEventListener("click", () => {
                 currentInput = currentInput + button.id;
-                console.log(currentInput);
+                displayEquation();
             });
         });
 
@@ -66,6 +67,7 @@
                 firstOperand = currentInput;
                 currentInput = "";
                 operator = button.id;
+                displayEquation();
             });
         });
 
@@ -75,17 +77,20 @@
             currentInput = "";
 
             operate(firstOperand, secondOperand, operator);
-            // console.log("f" + firstOperand);
-            // console.log("s" + secondOperand);
-            // console.log("o" + operator);
+            console.log("f" + firstOperand);
+            console.log("s" + secondOperand);
+            console.log("o" + operator);
         });
 
         let clearButton = document.querySelector("#clear");
         clearButton.addEventListener("click", () => {
-            let firstOperand = "";
-            let secondOperand = "";
-            let currentInput = "";
-            let operator = "";
+            firstOperand = "";
+            secondOperand = "";
+            currentInput = "";
+            operator = "";
+            result = "";
+            displayEquation();
+            displayResult();
         });
 
         function operate(firstOperand, secondOperand, operator) {
@@ -106,11 +111,43 @@
                         result = parseInt(firstOperand) / parseInt(secondOperand);
                     break;
             }
-            console.log(result);
-            display.textContent = result;
+            displayResult();
         }
 
-        let display = document.querySelector("#display");
+        function operatorToSymbol(string) {
+            switch (string) {
+                case "add":
+                    return " + ";
+                    break;
+                case "subtract":
+                    return " - ";
+                    break;
+                case "divide":
+                    return " / ";
+                    break;
+                case "multiply":
+                    return " * ";
+                    break;
+            }
+        }
+
+        function displayEquation() {
+            let displayStr = "";
+
+            if (firstOperand == "") 
+                displayStr = currentInput;
+            if (operator != "" && currentInput == "") {
+                displayStr = firstOperand + operatorToSymbol(operator);
+            }
+            if (operator != "" && currentInput != "") {
+                displayStr = firstOperand + operatorToSymbol(operator) + currentInput;
+            }
+            document.querySelector("#equation").textContent = displayStr;
+        }
+
+        function displayResult() {
+            document.querySelector("#result").textContent = result;
+        }
 
     </script>
 </body>
