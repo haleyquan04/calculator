@@ -4,7 +4,15 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #ffdecd;
+    background-color: #d0d5c6;
+    gap: 20px;
+}
+
+#message {
+    height: 36px;
+    font-size: 24px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: rgb(60, 60, 60);
 }
 
 #calculator {

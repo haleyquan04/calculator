@@ -98,12 +98,18 @@
         equalButton.addEventListener("click", () => {
             if(operator == "") {
                 result = currentInput;
+            if (("" + result).length > 8) {
+                displayMessage("Your result was too large!");
+                result = "Error";
+                displayResult();
+            }
+            displayResult();
             } else if (operator != "" && currentInput == "") {
-                displayMessage("equal error");
+                displayMessage("Error: No second operand.");
             } else {
-            secondOperand = currentInput;
-            currentInput = "";
-            operate(firstOperand, secondOperand, operator);
+                secondOperand = currentInput;
+                currentInput = "";
+                operate(firstOperand, secondOperand, operator);
             }
         });
 
@@ -132,11 +138,18 @@
                     result = parseInt(firstOperand) * parseInt(secondOperand);
                     break;
                 case "divide":
-                    if (secondOperand == 0)
-                       displayMessage("zero error");
+                    if (secondOperand == 0) {
+                       displayMessage("You can't divide by zero!");
+                       clearAll();
+                    }
                     else 
                         result = parseInt(firstOperand) / parseInt(secondOperand);
                     break;
+            }
+
+            if (("" + result).length > 8) {
+                displayMessage("Your result was too large!");
+                result = "Error";
             }
             displayResult();
         }
@@ -169,6 +182,11 @@
             if (operator != "" && currentInput != "") {
                 displayStr = firstOperand + operatorToSymbol(operator) + currentInput;
             }
+
+            if (displayStr.length > 14) {
+                displayMessage("Your equation is too long to display!");
+                displayStr = displayStr.substring(0, 14);
+            }
             document.querySelector("#equation").textContent = displayStr;
         }
 
@@ -178,8 +196,8 @@
 
         function displayMessage(message) {
             document.querySelector("#message").textContent = message;
-            setTimeout(function(){
-                document.querySelector("#message").textContent = ""}, 5000
+            setTimeout(function() {
+                document.querySelector("#message").textContent = ""}, 3000
             );
         }
 
