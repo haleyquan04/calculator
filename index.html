@@ -96,15 +96,14 @@
 
         let equalButton = document.querySelector("#equal");
         equalButton.addEventListener("click", () => {
+            // have operator, second number, result
             if(operator == "") {
                 result = currentInput;
-            if (("" + result).length > 8) {
-                displayMessage("Your result was too large!");
-                result = "Error";
                 displayResult();
-            }
-            displayResult();
-            } else if (operator != "" && currentInput == "") {
+            } else if (operator != "" && currentInput == "" && result != "") {
+                firstOperand = result;
+                operate(firstOperand, secondOperand, operator);
+            } else if (operator != "" && currentInput == "" && result == "") {
                 displayMessage("Error: No second operand.");
             } else {
                 secondOperand = currentInput;
@@ -129,27 +128,22 @@
         function operate(firstOperand, secondOperand, operator) {
             switch (operator) {
                 case "add":
-                    result = parseInt(firstOperand) + parseInt(secondOperand);
+                    result = parseFloat(firstOperand) + parseFloat(secondOperand);
                     break;
                 case "subtract":
-                    result = parseInt(firstOperand) - parseInt(secondOperand);
+                    result = parseFloat(firstOperand) - parseFloat(secondOperand);
                     break;
                 case "multiply":
-                    result = parseInt(firstOperand) * parseInt(secondOperand);
+                    result = parseFloat(firstOperand) * parseFloat(secondOperand);
                     break;
                 case "divide":
                     if (secondOperand == 0) {
                        displayMessage("You can't divide by zero!");
                        clearAll();
                     }
-                    else 
-                        result = parseInt(firstOperand) / parseInt(secondOperand);
+                    else
+                        result = parseFloat(firstOperand) / parseFloat(secondOperand);
                     break;
-            }
-
-            if (("" + result).length > 8) {
-                displayMessage("Your result was too large!");
-                result = "Error";
             }
             displayResult();
         }
@@ -191,7 +185,19 @@
         }
 
         function displayResult() {
-            document.querySelector("#result").textContent = result;
+            let resultToDisplay = result;
+            if (result.toString().length > 7) {
+                if (Number.isInteger(parseFloat(result))) {
+                    let startRes = result.toString().substring(0, 4);
+                    let endRes = result.toString().substring(4);
+                    resultToDisplay = (startRes * (10 ** endRes.length)).toExponential();
+                    console.log(resultToDisplay);
+                    displayMessage("Your result is too large to display!");
+                }
+                else
+                    resultToDisplay = result.toString().substring(0,7);
+            }
+            document.querySelector("#result").textContent = resultToDisplay;
         }
 
         function displayMessage(message) {
