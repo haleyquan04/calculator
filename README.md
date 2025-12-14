@@ -1,10 +1,10 @@
-# Basic Calculator Project
+# Simple Calculator Project
 
 ## About this project
-[Click here to check it out!](google.com)
-A simple four-function calculator with UI. Support for calculation chaining, specific button press order, and numbers too large to display.
-
-![demo](https://github.com/haleyquan04/calculator/blob/main/calculator-video.gif)
+Click [here] (google.com) to check it out!
+A simple four-function calculator with UI. Features keyboard support, calculation chaining, rounding decimal numbers & scientific notation for large numbers.
 
 ## Tech Stack
 Vanilla HTML, CSS, JavaScript
+
+![demo](https://github.com/haleyquan04/calculator/blob/main/calculator-video.gif)
