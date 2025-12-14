@@ -56,47 +56,61 @@
 
         let numButtons = document.querySelectorAll(".digit");
         numButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                if (result != "")
-                    clearAll();
-                currentInput = currentInput + button.id;
-                displayEquation();
-            });
+            button.addEventListener("click", () => handleNumberPress(button.id));
         });
 
         let operatorButtons = document.querySelectorAll(".operation");
         operatorButtons.forEach((button) => {
-            button.addEventListener("click", () => {
-                // no input, no operator -> nothing
-                if (currentInput == "" && firstOperand == "") {}
-                // no result, no operator (normal) -> update first input, operator
-                else if (result == "" && operator == "") {
-                    firstOperand = currentInput;
-                    currentInput = "";
-                    operator = button.id;
-                }
-                // no result, but an operator -> just want to change operator
-                else if (result == "" && operator != "" && currentInput == "") {
-                    currentInput = "";
-                    operator = button.id;
-                }
-                // no result, yes operator, have current input
-                else if (result == "" && operator != "" && currentInput != "") {}
-                // result is non-empty, we want to chain.
-                else if (result != "") {
-                    firstOperand = result;
-                    result = "";
-                    currentInput = "";
-                    operator = button.id;
-                }
-                displayEquation();
-                displayResult();
-            });
+            button.addEventListener("click", () => handleOperatorPress(button.id));
         });
 
         let equalButton = document.querySelector("#equal");
-        equalButton.addEventListener("click", () => {
-            // have operator, second number, result
+        equalButton.addEventListener("click", () => handleEqualPress());
+
+        let clearButton = document.querySelector("#clear");
+        clearButton.addEventListener("click", clearAll);
+
+        let bodySection = document.querySelector("body");
+        bodySection.addEventListener('keydown', (e) => {
+            const numberString = "1234567890";
+            const operationsString = "/x+-*"
+            
+            if (numberString.includes(e.key)) 
+                handleNumberPress(e.key);
+            else if (operationsString.includes(e.key))
+                handleOperatorPress(symbolToOperator(e.key));
+            else if (e.key == "=" || e.key == "Enter")
+                handleEqualPress();
+        });
+
+        function handleNumberPress(number) {
+            if (result != "")
+                clearAll();
+            currentInput = currentInput + number;
+                displayEquation();
+        }
+
+        function handleOperatorPress(passedIn) {
+            if (currentInput == "" && firstOperand == "") {}
+            else if (result == "" && operator == "") {
+                firstOperand = currentInput;
+                currentInput = "";
+                operator = passedIn;
+            } else if (result == "" && operator != "" && currentInput == "") {
+                currentInput = "";
+                operator = passedIn;
+            } else if (result == "" && operator != "" && currentInput != "") {
+            } else if (result != "") {
+                firstOperand = result;
+                result = "";
+                currentInput = "";
+                operator = passedIn;
+            }
+            displayEquation();
+            displayResult();
+        }
+
+        function handleEqualPress() {
             if(operator == "") {
                 result = currentInput;
                 displayResult();
@@ -110,10 +124,7 @@
                 currentInput = "";
                 operate(firstOperand, secondOperand, operator);
             }
-        });
-
-        let clearButton = document.querySelector("#clear");
-        clearButton.addEventListener("click", clearAll);
+        }
 
         function clearAll() {
             firstOperand = "";
@@ -140,8 +151,7 @@
                     if (secondOperand == 0) {
                        displayMessage("You can't divide by zero!");
                        clearAll();
-                    }
-                    else
+                    } else
                         result = parseFloat(firstOperand) / parseFloat(secondOperand);
                     break;
             }
@@ -165,6 +175,24 @@
             }
         }
 
+        function symbolToOperator(string) {
+            switch(string) {
+                case "+":
+                    return "add";
+                    break;
+                case "-": 
+                    return "subtract";
+                    break;
+                case "/":
+                    return "divide";
+                    break;
+                case "x":
+                case "*":
+                    return "multiply";
+                    break;
+            }
+        }
+
         function displayEquation() {
             let displayStr = "";
 
@@ -172,12 +200,9 @@
                 displayStr = currentInput;
             if (operator != "" && currentInput == "") {
                 displayStr = firstOperand + operatorToSymbol(operator);
-            }
-            if (operator != "" && currentInput != "") {
+            } if (operator != "" && currentInput != "") {
                 displayStr = firstOperand + operatorToSymbol(operator) + currentInput;
-            }
-
-            if (displayStr.length > 14) {
+            } if (displayStr.length > 14) {
                 displayMessage("Your equation is too long to display!");
                 displayStr = displayStr.substring(0, 14);
             }
@@ -193,8 +218,7 @@
                     result = (startRes * (10 ** endRes.length)).toExponential();
                     resultToDisplay = result;
                     displayMessage("Your result is too large to display!");
-                }
-                else
+                } else
                     resultToDisplay = result.toString().substring(0,7);
             }
             document.querySelector("#result").textContent = resultToDisplay;
@@ -202,9 +226,7 @@
 
         function displayMessage(message) {
             document.querySelector("#message").textContent = message;
-            setTimeout(function() {
-                document.querySelector("#message").textContent = ""}, 3000
-            );
+            setTimeout(function() {document.querySelector("#message").textContent = ""}, 3000);
         }
 
     </script>
