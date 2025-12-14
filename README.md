@@ -5,4 +5,4 @@ A simple four-function calculator with UI. Features keyboard support, calculatio
 ## Tech Stack
 Vanilla HTML, CSS, JavaScript
 
-![demo](github.com/haleyquan04/calculator/blob/main/calculator-video.gif)
+![demo](calculator/calc-gif.gif)
